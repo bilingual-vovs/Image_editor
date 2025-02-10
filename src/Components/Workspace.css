@@ -1,0 +1,6 @@
+#render{
+    border-width: 5px;
+    border-color: black;
+    border: solid;
+    overflow: hidden;
+}
