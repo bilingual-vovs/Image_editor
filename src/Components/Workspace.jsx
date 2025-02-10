@@ -18,7 +18,7 @@ export default class Workspace extends Component {
     if (this.mStat){
         let ctx = document.getElementById('canvas').getContext("2d")
         console.log(evt)
-        ctx.fillRect(evt.getX(), evt.getY(), 1, 1)
+        ctx.fillRect(evt.getx, evt.screenY, 1, 1)
     }
   }
 
