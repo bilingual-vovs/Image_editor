@@ -1,5 +1,9 @@
-class Layer {
-    constructor() {
+class LayerObj {
+    constructor(props) {
+        for(let key in props){
+            this[key] = props[key]
+        }
+        if (!(props.uid + 1)) throw new Error('Uid for layer is not specified')
     }
 
     objects = []
@@ -12,8 +16,8 @@ class Layer {
         this.sublayers.push(sublayer);
     }
     
-    get selfLayer() {
-        return new Layer(this.objects);
-    }
+    // get selfLayer() {
+    //     return new LayerObj(this.objects);
+    // }
 }
-export default Layer;
+export default LayerObj;

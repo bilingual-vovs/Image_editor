@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
+import './Layer.css'
 
 export default class Layer extends Component {
   constructor(){
     super()
-    this.layerDat = this.props.data
   }
   render() {
     return (
-      <div>
-        
+      <div className='layer'>
+        {this.props.data.uid}
       </div>
     )
   }
