@@ -8,7 +8,7 @@ export default class Layer extends Component {
   render() {
     return (
       <div className='layer'>
-        {this.props.data.uid}
+        {this.props.data.selfLayer}
       </div>
     )
   }

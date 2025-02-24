@@ -2,37 +2,39 @@ import React, { Component } from 'react'
 import "./Workspace.css"
 
 import Layer from '../Layer/Layer' 
-import LayerObj from '../../objects' 
+import obj from '../../objects' 
+const {LayerObj} = obj
+
 
 export default class Workspace extends Component {
   constructor(){
     super()
-    this.state = {
-      layers: []
-    }
+    this.layers = []
   }
 
   componentDidMount = () => {
     this.createLayer()
+    this.forceUpdate()
   }
 
   render() {
     return (
         <div id="render">
-          {this.state.layers.map((layer) => {
+          {this.layers.map((layer) => {
             return <Layer key={layer.uid} data={layer}/>
           })}
-          <button style={{position: "relative", left: "20px", zIndex: "10"}} onClick={this.createLayer}>add layer</button>
+          <button style={{position: "relative", left: "1000px", zIndex: "10"}} onClick={this.createLayer}>add layer</button>
         </div>
     )
   }
 
   createLayer = (dat) =>{
-    this.setState({layers: [...this.state.layers, new LayerObj({ uid: this.newLUid, ...dat})]})
+    this.layers.push(new LayerObj({ uid: this.newLUid, ...dat}))
+    this.forceUpdate()
   }
 
   get layerUids() {
-    return this.state.layers
+    return this.layers
       .map(el => el.uid)
       .sort((a, b) => a-b)
   }
