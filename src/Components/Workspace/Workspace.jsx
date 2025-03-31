@@ -3,6 +3,7 @@ import "./Workspace.css"
 
 import Layer from '../Layer/Layer' 
 import obj from '../../objects' 
+import CanvasLayer from '../CanvasLayer/CanvasLayer'
 const {LayerObj} = obj
 
 
@@ -20,6 +21,7 @@ export default class Workspace extends Component {
   render() {
     return (
         <div id="render">
+          <CanvasLayer></CanvasLayer>
           {this.layers.map((layer) => {
             return <Layer key={layer.uid} data={layer}/>
           })}

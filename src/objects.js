@@ -23,7 +23,7 @@ class LayerObj {
         if (!(props.uid + 1)) throw new Error('Uid for layer is not specified')
     }
 
-    objects = [new ObjectObj((<div>sadsad</div>), 100, 100)]
+    objects = []
 
     sublayers = [
         this.selfLayer
@@ -34,11 +34,20 @@ class LayerObj {
     }
 
     addObject = (obj) => {
-        console.log(typeof obj)
+        this.objects.push(obj)
     }
     
     get selfLayer() {
         return (<NativeLayer uid={this.uid} objs={this.objects} />)
+    }
+    render = () => {
+        return (
+            <div key={this.uid}>
+                {
+                    this.sublayers
+                }
+            </div>
+        )
     }
 
 }

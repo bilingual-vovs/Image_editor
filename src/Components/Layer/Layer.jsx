@@ -7,8 +7,8 @@ export default class Layer extends Component {
   }
   render() {
     return (
-      <div className='layer'>
-        {this.props.data.selfLayer}
+      <div  className='layer'>
+        {this.props.data.render()}
       </div>
     )
   }
