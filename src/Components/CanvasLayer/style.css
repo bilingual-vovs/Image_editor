@@ -1,0 +1,7 @@
+.canvas-container {
+  display: flex;
+}
+canvas{
+    border: black 1px solid;
+    background-color: #f0f0f0;
+}
