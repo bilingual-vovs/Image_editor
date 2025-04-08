@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import "./style.css"
 import { SketchPicker } from 'react-color';
+import Rect from '../Rect/Rect';
 
 class CanvasLayer extends Component {
   constructor(props) {
@@ -10,27 +11,64 @@ class CanvasLayer extends Component {
       brushWidth: 5,
       drawing: false,
       shape: 'freehand', // Options: freehand, rectangle, circle, triangle
+      rects: [],
+      activeShapeId: false
     };
     this.canvasRef = React.createRef();
   }
 
+  startRect = (evt) => {
+    this.setState({
+      rects: [...this.state.rects, {x: evt.clientX , y: evt.clientY, w: 0, h: 0, color: this.state.brushColor, active: true}], 
+      activeShapeId: this.state.rects.length,
+      drawing: true
+    })
+  }
+
   handleMouseDown = (e) => {
-    if (this.state.shape != 'freehand') return
-    const canvas = this.canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.beginPath();
-    ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    this.setState({ drawing: true });
+    switch (this.state.shape) {
+      case "freehand":
+        const canvas = this.canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+        this.setState({ drawing: true });
+        break;
+      case "rectangle":
+          this.startRect(e)
+        break
+      default:
+        break;
+    }
   };
 
   handleMouseMove = (e) => {
-    if (!this.state.drawing) return;
-    const canvas = this.canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.strokeStyle = this.state.brushColor;
-    ctx.lineWidth = this.state.brushWidth;
-    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    ctx.stroke();
+    switch (this.state.shape) {
+      case "freehand":
+          if (!this.state.drawing) return;
+          const canvas = this.canvasRef.current;
+          const ctx = canvas.getContext('2d');
+          ctx.strokeStyle = this.state.brushColor;
+          ctx.lineWidth = this.state.brushWidth;
+          ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+          ctx.stroke();
+        break;
+        case "rectangle":
+          if (!this.state.drawing) return;
+          const id = this.state.activeShapeId
+          let cng = {}
+          for (let key in this.state.rects[id]){
+            cng[key] = this.state.rects[id][key]
+          }
+          cng.w = e.clientX - cng.x
+          cng.h = e.clientY - cng.y
+          console.log([this.state.rects.slice(0, id)])
+          this.setState({rects: [...this.state.rects.slice(0, id), cng, ...this.state.rects.slice(id+1)]})
+        break
+    
+      default:
+        break;
+    }
   };
 
   handleMouseUp = () => {
@@ -152,7 +190,17 @@ class CanvasLayer extends Component {
             </select>
           </div>
         </div>
-        <canvas
+        <div 
+          onMouseDown={this.handleMouseDown}
+          onMouseMove={this.handleMouseMove}
+          onMouseUp={this.handleMouseUp}
+          onClick={this.handleClick}
+          onMouseLeave={this.handleMouseUp}
+        >
+          {
+            this.state.rects.map((e, i) => <Rect key={"r" + i} x={e.x} y={e.y} w={e.w} h={e.h} color={e.color} />)
+          }
+          <canvas
           ref={this.canvasRef}
           className="drawing-canvas"
           width={800}
@@ -162,7 +210,11 @@ class CanvasLayer extends Component {
           onMouseUp={this.handleMouseUp}
           onClick={this.handleClick}
           onMouseLeave={this.handleMouseUp}
-        ></canvas>
+        >
+          
+        </canvas>
+        </div>
+        
       </div>
     );
   }

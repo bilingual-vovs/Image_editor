@@ -1,0 +1,6 @@
+.rect{
+    position: absolute;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+}
